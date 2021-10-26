@@ -44,7 +44,7 @@ const stopRepeatRequest = function (reqList, url, cancel, errorMessage) {
 // if (process.env.NODE_ENV !== 'development') {
 // axios.defaults.baseURL = $config.baseURL;
 // axios.defaults.baseURL = 'http://118.121.58.171:8888';
-axios.defaults.baseURL = 'http://localhost:8888';
+axios.defaults.baseURL = 'http://118.121.58.171:8888';
 // }
 axios.defaults.timeout = 30000; // 超时时间
 
