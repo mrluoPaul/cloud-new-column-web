@@ -50,8 +50,10 @@
             placeholder="请选择类型"
             :disabled="test.type == 3"
           >
+          <el-option label="一级栏目" :value="1"></el-option>
+          <el-option label="二级栏目" :value="2"></el-option>
             <el-option label="文章" :value="3"></el-option>
-            <el-option label="栏目" :value="2"></el-option>
+            
           </el-select>
         </el-form-item>
         <el-form-item
