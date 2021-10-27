@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import store from '@/store/index';
+import store from '@/store/index';
 // import $config from '@/config/index';
 
 import QS from 'qs';
@@ -79,13 +79,20 @@ axios.interceptors.response.use(
     //   allowRequest(reqList, response.config.url);
     // }, 1000);
 
-    if (response.data) {
+    if (response.data.code === '0000') {
       return Promise.resolve(response.data);
-    } else {
-      // store.dispatch('showMessage', {
-      //   type: 'error',
-      //   message: response.data.message || response.data.msg || response.data.errMsg
-      // });
+    } else if (response.data.code == '403') {
+      store.dispatch('showMessage', {
+        type: 'error',
+        message: '未授权，请重新登录'
+      });
+      store.dispatch('doLogout');
+    }
+     else {
+      store.dispatch('showMessage', {
+        type: 'error',
+        message: response.data.message || response.data.msg || response.data.errMsg
+      });
       return Promise.reject(
         response.data.message || response.data.msg || response.data.errMsg,
         response
@@ -104,7 +111,7 @@ axios.interceptors.response.use(
           break;
         case 403:
           err.message = '没有访问权限，拒绝访问';
-          this.$router.push("/");
+          store.dispatch('doLogout');
           break;
         case 404:
           err.message = '请求错误,未找到该资源';
@@ -121,6 +128,7 @@ axios.interceptors.response.use(
       }
     } else {
       err.message = '连接到服务器失败';
+      store.dispatch('doLogout');
     }
     if (err.response && err.response.status !== 401) {
       store.dispatch('showMessage', {
